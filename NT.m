@@ -3,10 +3,10 @@ clear;
 
 pobj=parpool(20); % Parallel pool
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% RT-PCR
+%% No Test
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
@@ -48,18 +48,18 @@ parfor jj=1:1401
     PosttestIA(jj)=((1./w(jj)).*integral2(@(u,t)InfectiousnessfromInfectionTesting(t,u,[],testtype,R0S,R0A,1,ts,tL,td,0,betaRTPCR),0,w(jj),@(u)(w(jj)-u),td));
     
      % Infected before the test was adminsted 
-    PretestIS(jj)=((1./(ts-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTesting(t,u,0,testtype,R0S,R0A,0,ts,tL,td,SelfIsolate,betaRTPCR),0,ts-w(jj),@(u)(u+w(jj)),ts));
-    PretestIA(jj)=((1./(td-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTesting(t,u,0,testtype,R0S,R0A,1,ts,tL,td,0,betaRTPCR),0,td-w(jj),@(u)(u+w(jj)),td));
+    PretestIS(jj)=((1./(ts-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTesting(t,u,[],testtype,R0S,R0A,0,ts,tL,td,SelfIsolate,betaRTPCR),0,ts-w(jj),@(u)(u+w(jj)),ts));
+    PretestIA(jj)=((1./(td-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTesting(t,u,[],testtype,R0S,R0A,1,ts,tL,td,0,betaRTPCR),0,td-w(jj),@(u)(u+w(jj)),td));
     
 end
 
-save('Pre_Testing_RTPCR_Hellewell.mat');
+save('Pre_Testing_NoTest_Hellewell.mat');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% RT-PCR (OLD)
+%% No test (OLD)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
@@ -96,12 +96,12 @@ parfor jj=1:1401
     PosttestIA(jj)=((1./w(jj)).*integral2(@(u,t)InfectiousnessfromInfectionTestingOLD(t,u,[],testtype,R0S,R0A,1,ts,tL,td,0),0,w(jj),@(u)(w(jj)-u),td));
     
      % Infected before the test was adminsted 
-    PretestIS(jj)=((1./(ts-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTestingOLD(t,u,0,testtype,R0S,R0A,0,ts,tL,td,SelfIsolate),0,ts-w(jj),@(u)(u+w(jj)),ts));
-    PretestIA(jj)=((1./(td-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTestingOLD(t,u,0,testtype,R0S,R0A,1,ts,tL,td,0),0,td-w(jj),@(u)(u+w(jj)),td));
+    PretestIS(jj)=((1./(ts-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTestingOLD(t,u,[],testtype,R0S,R0A,0,ts,tL,td,SelfIsolate),0,ts-w(jj),@(u)(u+w(jj)),ts));
+    PretestIA(jj)=((1./(td-w(jj))).*integral2(@(u,t)InfectiousnessfromInfectionTestingOLD(t,u,[],testtype,R0S,R0A,1,ts,tL,td,0),0,td-w(jj),@(u)(u+w(jj)),td));
     
 end
 
-save('Pre_Testing_RTPCR_NatComm.mat');
+save('Pre_Testing_NoTest_NatComm.mat');
 
 clear;
 

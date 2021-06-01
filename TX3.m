@@ -6,7 +6,7 @@ pobj=parpool(20); % Parallel pool
 %% RT-PCR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
@@ -30,8 +30,9 @@ R0A=R0; % Set R0 for asymptomatic
 load('MLE-Estimate-RTPCR-Hill.mat','beta')
 betaRTPCR=beta;
 
+load('Sofia_Parameter.mat','beta');
 testtype=cell(1,1);
-testtype{1}=[];
+testtype{1}=beta;
 
 
 parfor jj=1:1401 
@@ -53,13 +54,13 @@ parfor jj=1:1401
     
 end
 
-save('Pre_Testing_RTPCR_Hellewell.mat');
+save('Pre_Testing_Sofia_Hellewell.mat');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% RT-PCR (OLD)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
@@ -79,8 +80,9 @@ td=ts+20; % Asymptomatic increase 20 days from symptom onset
 R0S=R0; % Set R0 for symptomatic
 R0A=R0; % Set R0 for asymptomatic
 
+load('Sofia_Parameter.mat','beta');
 testtype=cell(1,1);
-testtype{1}=[];
+testtype{1}=beta;
 
 parfor jj=1:1401 
 %     % Infected after the test was adminsted 
@@ -101,7 +103,7 @@ parfor jj=1:1401
     
 end
 
-save('Pre_Testing_RTPCR_NatComm.mat');
+save('Pre_Testing_Sofia_NatComm.mat');
 
 clear;
 
