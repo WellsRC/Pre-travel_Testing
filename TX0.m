@@ -6,7 +6,7 @@ pobj=parpool(20); % Parallel pool
 %% RT-PCR
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
@@ -27,7 +27,7 @@ R0S=R0; % Set R0 for symptomatic
 R0A=R0; % Set R0 for asymptomatic
 
 
-load('MLE-Estimate-RTPCR-Hill.mat','beta')
+load('MLE-Estimate-RTPCR-Hill_Incubation_8_29_days.mat','beta')
 betaRTPCR=beta;
 
 testtype=cell(1,1);
@@ -59,7 +59,7 @@ save('Pre_Testing_RTPCR_Hellewell.mat');
 %% RT-PCR (OLD)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w=[0:0.005:7];
-w(1)=10^(-32);
+
 SelfIsolate=1; % Self-isolation
 tL=[2.9]; % vecotor for the incbation periods to be integrated over
 
