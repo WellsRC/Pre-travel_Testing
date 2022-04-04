@@ -1,6 +1,4 @@
-function V = ViralShedding_Asymptomatic(t,tL,td)
-%ViralShedding_Asymptomatic(t,tL) reutrns the level of infectiousness for an asymptomatic individual at
-%time t
+function V = ViralShedding_Asymptomatic(t,ts,td)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Input
@@ -16,30 +14,27 @@ function V = ViralShedding_Asymptomatic(t,tL,td)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Code
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% See EstimatingInfectioncurves for how determined
 
-av=[6.85146800000000;3.44342380000000;2.16082760000000];
-bv=[0.982316341225263;1.76955383531329;2.35323186981921];
-dtv=[0.6000;0.4930;0.2280];
-mv=[8.73444451395173,4.39111912719557,4.66640152265155];
 
-LatentPeriod=[1.9,2.9,3.9];
-a=av(tL==LatentPeriod);
-b=bv(tL==LatentPeriod);
-dt=dtv(tL==LatentPeriod);
-m=mv(tL==LatentPeriod);
+% if(strcmp(VOC,'Original'))
+%     Gx =[6.127 3.277];
+%     V=wblpdf(t,Gx(1),Gx(2))./wblcdf(td,Gx(1),Gx(2));
+% elseif(strcmp(VOC,'Delta'))
+%     Gx =[4.230765931945100   0.959892250476516];
+%     V=gampdf(t,Gx(1),Gx(2))./gamcdf(td,Gx(1),Gx(2));
+% elseif(strcmp(VOC,'Omicron'))
+%     m=3.3;
+%     v=3.5^2;
+%     Gx=[log(m^2/sqrt(v+m^2)) sqrt(log(v/m^2+1))];
+%     V=lognpdf(t,Gx(1),Gx(2))./logncdf(td,Gx(1),Gx(2));
+% end
+% V(t>td)=0;
 
-V=zeros(size(t));
-V(t>=(tL+dt))=gampdf(t(t>=(tL+dt))-tL,a,b); % Do not need the 100 as the 100 was used to scale to the data y and this will be normalzied after
+V=Infectivity_Profile(t,ts,td);
 
-CD=gampdf(dt,a,b);
-A=CD./(exp(m.*(dt+tL))-1);
-V(t<(tL+dt))=A.*(exp(m.*t(t<(tL+dt)))-1);
-V(t<0)=0;
-V(t>td)=0;
-% Normalizing constant
-NC=integral(@(x)(A.*(exp(m.*x)-1)),0,tL+dt)+integral(@(x)(gampdf(x-tL,a,b)),tL+dt,td);
 
-V=V./NC;
+
+VC=integral(@(x)Infectivity_Profile(x,ts,td),0,td);
+
+V=V./VC;
 end
-
