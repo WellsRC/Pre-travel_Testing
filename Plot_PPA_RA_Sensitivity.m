@@ -32,13 +32,18 @@ for ii=1:NumTests
                 p2=scatter(Dt(w==1),100.*truepos(w==1)./totalpos(w==1),40,'o','filled','MarkerEdgeColor',hex2rgb('#004445'),'MarkerFaceColor',hex2rgb('#004445'));
                 scatter(Dt(~isnan(w) & w<1),100.*truepos(~isnan(w) & w<1)./totalpos(~isnan(w) & w<1),40,'o','LineWidth',2,'MarkerEdgeColor',hex2rgb('#004445'));
 
-                set(gca,'LineWidth',1.1,'tickdir','out','Fontsize',18,'XTick',[0:5:40],'xlim',[0 40],'XMinorTick','on','Yminortick','on','YTick',[0:20:100],'Ylim',[0 100]);
+                set(gca,'LineWidth',1.1,'tickdir','out','Fontsize',18,'XTick',[0:5:40],'xlim',[0 25],'XMinorTick','on','Yminortick','on','YTick',[0:20:100],'Ylim',[0 100]);
                 ytickformat('percentage')
                 xlabel('Days since symptom onset','Fontsize',18);
                 ylabel({'Percent','positive agreement'},'Fontsize',18,'Position',[-2.94470530625081,50,-0.999999999999986]);
-                
-                text(-5.697,98.8,'A','Fontsize',30,'FontWeight','bold');
-                text(42.33621755253399,108.051948051948,AdjustedNames_Plotting(testName{ii}),'Fontsize',28,'FontWeight','bold','HorizontalAlignment','center');
+                text(-2.312574783683559.*25./40,108.4,'n=','Fontsize',14);
+                for ss=1:length(w)
+                    if(~isnan(w(ss)))
+                        text(Dt(ss),108.4,num2str(totalpos(ss)),'Fontsize',14,'Horizontalalignment','center');
+                    end
+                end
+                text(-5.697.*25./40,98.8,'A','Fontsize',30,'FontWeight','bold');
+                text(42.33621755253399.*25./40,108.051948051948,AdjustedNames_Plotting(testName{ii}),'Fontsize',28,'FontWeight','bold','HorizontalAlignment','center');
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
                 % Omicron
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55

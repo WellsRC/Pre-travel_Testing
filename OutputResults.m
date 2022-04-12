@@ -1,179 +1,99 @@
 clear;
 clc;
+R0v=[5.08*(1+0.365) 5.08 2.79];
+VOCv={'Omicron','Delta','Original'};
+rng default;
+pA=0.351; % Proportion of asymptomatic
+par=fminbnd(@(x)((betainv(0.025,x,x*(1-pA)./pA)-0.307).^2+(betainv(0.975,x,x*(1-pA)./pA)-0.399).^2),[0],[400]);
+pAv=betarnd(par,par*(1-pA)./pA,1000,1);
+
+load('RAgTest_Name_Final.mat','testName');
+NumTests=length(testName);
+
+MLE_Red=zeros(NumTests,1);
+All_Red=zeros(NumTests,1000);
+
+MLE_PT=zeros(NumTests,1);
+All_PT=zeros(NumTests,1000);
+
+vv=1;
 
 
-R0Delta=5.08;
+    R0VOC=R0v(vv);
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % No test
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    load(['Pre_Testing_No_Testing_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
+    RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
+    RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
 
-pA=0.308; % Proportion of asymptomatic
+    RS(w==0)=PretestIS(w==0);
+    RA(w==0)=PretestIA(w==0);
+    
+    RS(w==ts)=PosttestIS(w==ts);
+    RA(w==td)=PosttestIA(w==td);
 
+    RNoTest=pA.*RA.*(R0VOC./R0A)+(1-pA).*RS.*(R0VOC./R0S);
+    RNoTest=RNoTest(w==0);
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % No test
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    load(['Pre_Testing_No_Testing_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
+    RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
+    RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
 
-Risk=1;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% No test (NatComm)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_NoTest_NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
+    RS(w==0)=PretestIS(w==0);
+    RA(w==0)=PretestIA(w==0);
+    
+    RS(w==ts)=PosttestIS(w==ts);
+    RA(w==td)=PosttestIA(w==td);
+    
+    RA=repmat(RA(w==0),1000,1);
+    RS=repmat(RS(w==0),1000,1);
 
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
+    RNoTestv=pAv.*RA.*(R0VOC./R0A)+(1-pAv).*RS.*(R0VOC./R0S);
+    
+    
+    for jj=1:NumTests
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % RA TEST
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        load(['Pre_Testing_' testName{jj} '_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
+        RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
+        RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
 
-RNoTest=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-fprintf('=================================\n');
-fprintf('No test \n');
-fprintf('=================================\n');
-fprintf('Expected transmission No Test: %3.2f \n',RNoTest(1));
-fprintf('Probability of transmission No Test: %3.0f \n',100.*Probability_Onward(RNoTest(1),Risk));
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Pre-departure RT-PCR testing. (NatComm)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RTPCR
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_RTPCR_NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RRTPCR=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BinaxNOW
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_BinaxNow__NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RBinax=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% BDVeritor
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_BD Veritor__NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RBDVeritor=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Sofia
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_Sofia (FDA)__NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RSofia=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Lumarax
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_LumiraDX (Anterior Nasal Swab)__NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RLumarax=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% CareStart
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Pre_Testing_CareStart (Anterior Nasal Swab - FDA)__NatComm.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RCareStart=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
+        RS(w==0)=PretestIS(w==0);
+        RA(w==0)=PretestIA(w==0);
 
 
+        RS(w==ts)=PosttestIS(w==ts);
+        RA(w==td)=PosttestIA(w==td);
 
-fprintf('=================================\n');
-fprintf('RT-PCR test \n');
-fprintf('=================================\n');
-fprintf('Expected transmission RT-PCR 24 hr: %3.2f \n',RRTPCR(w==1));
-fprintf('Expected transmission RT-PCR 12 hr: %3.2f \n',RRTPCR(w==0.5));
-fprintf('Expected transmission RT-PCR 72 hr: %3.2f \n',RRTPCR(w==3));
-fprintf('Expected transmission RT-PCR 1 week: %3.2f \n',RRTPCR(w==7));
+        R_RATest=pA.*RA.*(R0VOC./R0A)+(1-pA).*RS.*(R0VOC./R0S);
 
 
-fprintf('Probability transmission RT-PCR 24 hr: %3.1f \n',100.*Probability_Onward(RRTPCR(w==1),Risk));
-fprintf('Probability transmission RT-PCR 1 week: %3.1f \n',100.*Probability_Onward(RRTPCR(w==7),Risk));
+        Risk=1;
+        MLE_Red(jj,:)=1-R_RATest(w==0)./RNoTest;   
+        MLE_PT(jj,:)=[100.*Probability_Onward(R_RATest(w==0),Risk);];
+        
+        load(['Pre_Testing_' testName{jj} '_' VOCv{vv} '_Uncertainty.mat'],'PosttestISv','PosttestIAv','PretestISv','PretestIAv');
+        w=repmat([0 0.5 1 2 3],1000,1);
+        RS=(w./ts).*PosttestISv+((ts-w)./ts).*PretestISv;
+        RA=(w./td).*PosttestIAv+((td-w)./td).*PretestIAv;
+
+        RS(w==0)=PretestISv(w==0);
+        RA(w==0)=PretestIAv(w==0);
 
 
-fprintf('=================================\n');
-fprintf('Rapid Antigen test \n');
-fprintf('=================================\n');
+        RS(w==ts)=PosttestISv(w==ts);
+        RA(w==td)=PosttestIAv(w==td);
 
-load('Table_NatComm.mat','EPT','ProbTrans');
+        R_RATestv=pAv.*RA.*(R0VOC./R0A)+(1-pAv).*RS.*(R0VOC./R0S);
 
-fprintf('Range Expected transmission 5 popular RA test: %3.2f  to %3.2f \n',[min([RLumarax(w==0) RSofia(w==0) RBinax(w==0) RBDVeritor(w==0) RCareStart(w==0)]) max([RLumarax(w==0) RSofia(w==0) RBinax(w==0) RBDVeritor(w==0) RCareStart(w==0)])] );
-
-fprintf('Range Probability transmission 5 popular RA test: %3.0f  to %3.0f \n',100.*Probability_Onward([min([RLumarax(w==0) RSofia(w==0) RBinax(w==0) RBDVeritor(w==0) RCareStart(w==0)]) max([RLumarax(w==0) RSofia(w==0) RBinax(w==0) RBDVeritor(w==0) RCareStart(w==0)])],Risk) );
-
-fprintf('Median (Range) Expected transmission ALL RA test: %3.2f (%3.2f  to %3.2f) \n',[ median(EPT(2:end,end)) min(EPT(2:end,end)) max(EPT(2:end,end))]);
-fprintf('Median probability transmission ALL RA test: %3.0f (%3.0f  to %3.0f) \n',100.*[ median(ProbTrans(2:end,end)) min(ProbTrans(2:end,end)) max(ProbTrans(2:end,end))]);
+        R_temp=1-R_RATestv./RNoTestv; 
 
 
-fRAp=find(EPT(2:end,end)>EPT(1,end-1));
+        All_Red(jj,:)=R_temp(w==0);
 
-fprintf('Number of RA tests that do worse than 24 h RT-PCR: %2.0f \n',length(fRAp));
-
-fprintf('Time RT-PCR conducted to do better than 50%% of RA: %3.1f \n',24*w(max(find(RRTPCR<median(EPT(2:end,end))))))
-
-
-RedC=1-RRTPCR(w==0)./RRTPCR(w==7);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% RTPCR (Hellewell)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-fprintf('=================================\n');
-fprintf('Hellewell \n');
-fprintf('=================================\n');
-
-load('Pre_Testing_RTPCR_Hellewell.mat','w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
-RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
-RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
-
-RS(w==0)=PretestIS(w==0);
-RA(w==0)=PretestIA(w==0);
-
-RRTPCRH=pA.*RA.*(R0Delta./R0A)+(1-pA).*RS.*(R0Delta./R0S);
-
-
-RedH=1-RRTPCRH(w==0)./RRTPCRH(w==7);
-
-fprintf('Percent reduction Hellewell vs Wells: %3.0f vs %3.0f  \n',100.*[RedH RedC]);
-
-
-load('Table_Hellewell.mat','EPT','ProbTrans');
-
-
-fRAp=find(EPT(2:end,end)>EPT(1,end-1));
-
-fprintf('Number of RA tests that do worse than 24 h RT-PCR for Hellewell: %2.0f \n',length(fRAp));
-
-
-fprintf('Median probability transmission ALL RA test Hellewell: %3.0f (%3.0f  to %3.0f) \n',100.*[ median(ProbTrans(2:end,end)) min(ProbTrans(2:end,end)) max(ProbTrans(2:end,end))]);
-
-fprintf('Time RT-PCR conducted to do better than 50%% of RA for Hellewell: %3.1f \n',24*w(max(find(RRTPCRH<median(EPT(2:end,end))))))
+        All_PT(jj,:)=100.*Probability_Onward(R_RATestv(w==0),Risk);
+    end
