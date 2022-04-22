@@ -47,7 +47,7 @@ R0VOC=R0v(vv);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % BinaxNOW
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    load(['Pre_Testing_BinaxNow_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
+    load(['Pre_Testing_BinaxNOW (FDA)_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
     RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
     RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
 
@@ -58,7 +58,7 @@ R0VOC=R0v(vv);
     RA(w==td)=PosttestIA(w==td);
 
     RBinax=pA.*RA.*(R0VOC./R0A)+(1-pA).*RS.*(R0VOC./R0S);
-    R(3)=RBinax(w==0);
+    R(4)=RBinax(w==0);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % BDVeritor
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,7 +73,7 @@ R0VOC=R0v(vv);
     RA(w==td)=PosttestIA(w==td);
 
     RBDVeritor=pA.*RA.*(R0VOC./R0A)+(1-pA).*RS.*(R0VOC./R0S);
-    R(4)=RBDVeritor(w==0);
+    R(3)=RBDVeritor(w==0);
     
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
