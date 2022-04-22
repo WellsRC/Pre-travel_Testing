@@ -44,7 +44,7 @@ for vv=1:3
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % BinaxNOW
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    load(['Pre_Testing_BinaxNow_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
+    load(['Pre_Testing_BinaxNOW (FDA)_' VOCv{vv} '.mat'],'w','ts','td','PosttestIS','PosttestIA','PretestIS','PretestIA','R0A','R0S');
     RS=(w./ts).*PosttestIS+((ts-w)./ts).*PretestIS;
     RA=(w./td).*PosttestIA+((td-w)./td).*PretestIA;
 
@@ -165,4 +165,7 @@ for vv=1:3
     legend boxoff;
     text(8.216697819314641,43.5376,'B','Fontsize',34','FontWeight','bold');
     print(gcf,['PreDeparture_' VOCv{vv} '.png'],'-dpng','-r600');
+    if(vv==1)
+        print(gcf,['Figure1.tiff'],'-dtiff','-r600');
+    end
 end
