@@ -7,7 +7,6 @@ pA=0.351; % Proportion of asymptomatic
 par=fminbnd(@(x)((betainv(0.025,x,x*(1-pA)./pA)-0.307).^2+(betainv(0.975,x,x*(1-pA)./pA)-0.399).^2),[0],[400]);
 pAv=betarnd(par,par*(1-pA)./pA,1000,1);
 
-
 vv=1;
 
 
@@ -88,3 +87,5 @@ vv=1;
     RRTPCRv=pAv.*RA.*(R0VOC./R0A)+(1-pAv).*RS.*(R0VOC./R0S);
     
     R_temp=1-RRTPCRv./RNoTestv; 
+    
+ fprintf(['RT-PCR testing a week prior: ' num2str(100.*Red_RTPCR,'%3.2f') '%% (' num2str(prctile(100.*R_temp,2.5),'%3.2f') '%%' char(8211) num2str(prctile(100.*R_temp,97.5),'%3.2f') '%%) \n']);      

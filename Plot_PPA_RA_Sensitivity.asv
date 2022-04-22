@@ -50,24 +50,6 @@ for ii=1:NumTests
                                        cc=cc+1;
                                    end
                                    text(mean([Dt(ss) Dt(ss+cc)]),108.4,num2str(totalpos(ss)),'Fontsize',14,'Horizontalalignment','center');
-                                   for zz=ss:(ss+cc)
-                                       if(abs(Dt(zz)-mean([Dt(ss) Dt(ss+cc)]))>=1)
-                                        text(Dt(zz),108.4,char(8212),'Fontsize',14,'Horizontalalignment','center');
-                                       end
-                                   end
-                               end
-                            elseif(ss==1)                                
-                               if(w(ss)==w(ss+1))
-                                   cc=0;
-                                   while(w(ss)==w(cc+1+ss))
-                                       cc=cc+1;
-                                   end
-                                   text(mean([Dt(ss) Dt(ss+cc)]),108.4,num2str(totalpos(ss)),'Fontsize',14,'Horizontalalignment','center');
-                                   for zz=ss:(ss+cc)
-                                       if(abs(Dt(zz)-mean([Dt(ss) Dt(ss+cc)]))>=1)
-                                        text(Dt(zz),108.4,char(8212),'Fontsize',14,'Horizontalalignment','center');
-                                       end
-                                   end
                                end
                             end
                         end

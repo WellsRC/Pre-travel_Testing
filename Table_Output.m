@@ -177,10 +177,10 @@ for vv=1:3
                     Name_PT{jj}=AdjustedNames_Plotting(testName{jj-1});
                     Name_Red{jj}=AdjustedNames_Plotting(testName{jj-1});
            end
-           Time_Test_PT{jj,1}=[num2str(MLE_PT_NT(1),'%4.2f') '% (' num2str(LB_95_PT_NT(1),'%4.2f') '%' char(8211) num2str(UB_95_PT_NT(1),'%4.2f') '%)'];               
+           Time_Test_PT{jj,1}=[num2str(MLE_PT_NT(1),'%3.1f') '% (' num2str(LB_95_PT_NT(1),'%3.1f') '%' char(8211) num2str(UB_95_PT_NT(1),'%3.1f') '%)'];               
            for ww=1:5
-               Time_Test_PT{jj,7-ww}=[num2str(MLE_PT(jj,ww),'%4.2f') '% (' num2str(LB_95_PT(jj,ww),'%4.2f') '%' char(8211) num2str(UB_95_PT(jj,ww),'%4.2f') '%)'];               
-               Time_Test_Red{jj,6-ww}=[num2str(100.*MLE_Red(jj,ww),'%4.2f') '% (' num2str(100.*LB_95_Red(jj,ww),'%4.2f') '%' char(8211) num2str(100.*UB_95_Red(jj,ww),'%4.2f') '%)'];               
+               Time_Test_PT{jj,7-ww}=[num2str(MLE_PT(jj,ww),'%3.1f') '% (' num2str(LB_95_PT(jj,ww),'%3.1f') '%' char(8211) num2str(UB_95_PT(jj,ww),'%3.1f') '%)'];               
+               Time_Test_Red{jj,6-ww}=[num2str(100.*MLE_Red(jj,ww),'%3.1f') '% (' num2str(100.*LB_95_Red(jj,ww),'%3.1f') '%' char(8211) num2str(100.*UB_95_Red(jj,ww),'%3.1f') '%)'];               
            end
     end
     

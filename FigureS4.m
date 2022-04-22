@@ -10,6 +10,7 @@ pAv=betarnd(par,par*(1-pA)./pA,1000,1);
 pAv=repmat(pAv,1,6);
 
 load('RAgTest_Name_Top.mat','testName');
+testName=sort(testName);
 NumTests=length(testName);
 
 MLE_Red=zeros(NumTests+1,6);
@@ -175,7 +176,7 @@ for vv=1:3
     grid on
     xlim([0.5 6.5]);
     ylim([0 60]);
-    ylabel({'Reduction in post-arrival transmission srelative to no test'},'Fontsize',20);
+    ylabel({'Reduction in post-arrival transmission relative to no test'},'Fontsize',20);
     ytickformat('percentage');
     text(-0.355464759959142,58.0505415162455,'B','Fontsize',32,'FontWeight','bold');
   else
@@ -187,7 +188,7 @@ for vv=1:3
                 plot(ii+linspace(xx(nt),xx(nt)+dxx,101),100.*MLE_Red(nt,ii).*ones(101,1),'LineWidth',2,'color',Lcolour(nt,:));
             end
         end
-    set(gca,'LineWidth',2,'tickdir','out','Fontsize',18,'XTickLabel',{'0-h','12-h','24-h','48-h','72-h','7 days'},'XTick',[1:6],'YTick',[0:10:60]);
+    set(gca,'LineWidth',2,'tickdir','out','Fontsize',18,'XTickLabel',{'0 h','12 h','24 h','48 h','72 h','7 days'},'XTick',[1:6],'YTick',[0:10:60]);
     grid on
     xlabel('Time test taken prior to arrival','Fontsize',20);
     xlim([0.5 6.5]);

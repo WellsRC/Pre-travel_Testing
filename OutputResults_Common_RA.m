@@ -7,7 +7,7 @@ pA=0.351; % Proportion of asymptomatic
 par=fminbnd(@(x)((betainv(0.025,x,x*(1-pA)./pA)-0.307).^2+(betainv(0.975,x,x*(1-pA)./pA)-0.399).^2),[0],[400]);
 pAv=betarnd(par,par*(1-pA)./pA,1000,1);
 
-load('RAgTest_Name_Final.mat','testName');
+load('RAgTest_Name_Top.mat','testName');
 NumTests=length(testName);
 
 MLE_Red=zeros(NumTests,1);
@@ -97,8 +97,11 @@ vv=1;
 
         All_PT(jj,:)=100.*Probability_Onward(R_RATestv(w==0),Risk);
     end
-    fprintf(['Median. across all RA test: ' num2str(100.*median(MLE_Red),'%3.1f') '%% (' num2str(prctile(100.*median(All_Red),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*median(All_Red),97.5),'%3.1f') '%%) \n']);      
-    fprintf(['Min. across all RA test: ' num2str(100.*min(MLE_Red),'%3.1f') '%% (' num2str(prctile(100.*min(All_Red),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*min(All_Red),97.5),'%3.1f') '%%) \n']);      
-    fprintf(['max. across all RA test: ' num2str(100.*max(MLE_Red),'%3.1f') '%% (' num2str(prctile(100.*max(All_Red),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*max(All_Red),97.5),'%3.1f') '%%) \n']);      
     
-    fprintf(['Median. probability of transmission across all RA test: ' num2str(median(MLE_PT),'%3.1f') '%% (' num2str(prctile(median(All_PT),2.5),'%3.1f') '%%' char(8211) num2str(prctile(median(All_PT),97.5),'%3.1f') '%%) \n']);      
+    fprintf(['Min. reduction across all RA test: ' num2str(100.*min(MLE_Red),'%3.1f') '%% (' num2str(prctile(100.*min(All_Red),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*min(All_Red),97.5),'%3.1f') '%%) \n']);      
+    fprintf(['max. reduction across all RA test: ' num2str(100.*max(MLE_Red),'%3.1f') '%% (' num2str(prctile(100.*max(All_Red),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*max(All_Red),97.5),'%3.1f') '%%) \n']);      
+    fprintf([testName{MLE_Red==max(MLE_Red)} ' had the greatest reduction among the 5 most common tests \n']);
+    
+    
+    fprintf(['Min. probability post-arrival transmisison across all RA test: ' num2str(min(MLE_PT),'%3.1f') '%% (' num2str(prctile(min(All_PT),2.5),'%3.1f') '%%' char(8211) num2str(prctile(min(All_PT),97.5),'%3.1f') '%%) \n']);      
+    fprintf(['max. probability post-arrival transmisison across all RA test: ' num2str(max(MLE_PT),'%3.1f') '%% (' num2str(prctile(max(All_PT),2.5),'%3.1f') '%%' char(8211) num2str(prctile(max(All_PT),97.5),'%3.1f') '%%) \n']);      

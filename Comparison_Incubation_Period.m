@@ -44,3 +44,6 @@ for vv=1:3
     Expected_Transmission_V(vv,:)=pAv.*RA.*(1./R0A)+(1-pAv).*RS.*(1./R0S);
     
 end
+
+fprintf(['No Testing post-arrival transmission: Delta relative to Omicron: ' num2str(100.*(Expected_Transmission(2)./Expected_Transmission(1)-1),'%3.1f') '%% (' num2str(prctile(100.*(Expected_Transmission_V(2,:)./Expected_Transmission_V(1,:)-1),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*(Expected_Transmission_V(2,:)./Expected_Transmission_V(1,:)-1),97.5),'%3.1f') '%%) \n']);      
+fprintf(['No Testing post-arrival transmission: Original relative to Omicron: ' num2str(100.*(Expected_Transmission(3)./Expected_Transmission(1)-1),'%3.1f') '%% (' num2str(prctile(100.*(Expected_Transmission_V(3,:)./Expected_Transmission_V(1,:)-1),2.5),'%3.1f') '%%' char(8211) num2str(prctile(100.*(Expected_Transmission_V(3,:)./Expected_Transmission_V(1,:)-1),97.5),'%3.1f') '%%) \n']); 
