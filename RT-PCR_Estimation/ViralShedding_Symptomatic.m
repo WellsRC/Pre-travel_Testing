@@ -30,7 +30,7 @@ function V = ViralShedding_Symptomatic(t,ts,td)
 % end
 % V(t>td)=0;
 
-V=Infectivity_Profile(t,td,ts);
+V=Infectivity_Profile(t,ts,td);
 
 
 

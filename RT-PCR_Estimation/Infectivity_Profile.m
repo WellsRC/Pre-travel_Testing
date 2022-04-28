@@ -1,4 +1,4 @@
-function V=Infectivity_Profile(t,td,ts)
+function V=Infectivity_Profile(t,ts,td)
     V=zeros(size(t));
     m=-4;
     s=1.85;
