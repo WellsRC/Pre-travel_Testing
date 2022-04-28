@@ -10,11 +10,11 @@ pobj=parpool(32); % Parallel pool
 SelfIsolate=1; % Self-isolation
 % 
 % % Allcoate memory for output
-% PretestIS=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
-% PosttestIS=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
-% 
-% PretestIA=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
-% PosttestIA=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
+PretestIS=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
+PosttestIS=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
+
+PretestIA=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
+PosttestIA=zeros(1,length(w)); % Assumes asymptomatic enter over infections period 
 % 
 % Get Basline parameters
 R0=1; % To scale easier after
