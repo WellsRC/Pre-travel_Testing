@@ -14,7 +14,7 @@ figure('units','normalized','outerposition',[0 0 1 1]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Omicron
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-subplot('Position',[0.061491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
+subplot('Position',[0.561491596638655,0.114,0.424600840336134,0.390000000000001]);
 vv=1;
 ts1=tsvB(vv);
 
@@ -45,15 +45,15 @@ set(gca,'LineWidth',2,'tickdir','out','XTick',[0:5:50],'Xminortick','on','YTick'
 ylabel('Diagnostic sensitivity','Fontsize',22);
 xlabel('Days post-infection','Fontsize',22);
 
-text(-6.30407911001236,0.995,'A','Fontsize',32,'FontWeight','bold');
+text(-6.30407911001236,0.995,'D','Fontsize',32,'FontWeight','bold');
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Non-Delta
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-subplot('Position',[0.061491596638655,0.114,0.424600840336134,0.390000000000001]);
-
+% subplot('Position',[0.061491596638655,0.114,0.424600840336134,0.390000000000001]);
+subplot('Position',[0.061491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
 vv=3;
 ts3=tsvB(vv);
 
@@ -89,14 +89,60 @@ set(gca,'LineWidth',2,'tickdir','out','XTick',[0:5:50],'Xminortick','on','YTick'
 ylabel('Diagnostic sensitivity','Fontsize',22);
 xlabel('Days post-infection','Fontsize',22);
 
-text(-6.30407911001236,0.995,'C','Fontsize',32,'FontWeight','bold');
+text(-6.30407911001236,0.995,'A','Fontsize',32,'FontWeight','bold');
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% Relative infectivity
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+
+load('Peak_Infection.mat','mmv','tsv');
+
+ts2=tsvB(2);
+
+R1=Relative_Infection_PCR(t,ts1,pchip(tsv,mmv,ts1));
+R2=Relative_Infection_PCR(t,ts2,pchip(tsv,mmv,ts2));
+R3=Relative_Infection_PCR(t,ts3,pchip(tsv,mmv,ts3));
+
+subplot('Position',[0.561491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
+
+plot(t,R1,'k',t,R2,'b',t,R3,'r','LineWidth',2); hold on
+legend({'3.1 day incubation period','4.4 day incubation period','5.72 day incubation period'},'Fontsize',19);
+legend boxoff;
+box off;
+xlim([0 20]);
+set(gca,'LineWidth',2,'tickdir','out','XTick',[-5:5:50],'Xminortick','on','YTick',[0:0.1:1],'YminorTick','on','Fontsize',20);
+ylabel('Relative infectivity','Fontsize',22);
+xlabel('Days since infection','Fontsize',22);
+
+text(-2.773794750061803,0.997604166666667,'B','Fontsize',32,'FontWeight','bold');
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+% Mapping
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+subplot('Position',[0.061491596638655,0.114,0.424600840336134,0.390000000000001]);
+
+
+plot(R3(t<=pchip(tsv,mmv,ts3)),S3(t<=pchip(tsv,mmv,ts3)),'r',R3(t>pchip(tsv,mmv,ts3)),S3(t>pchip(tsv,mmv,ts3)),'r-.','LineWidth',2); hold on
+legend({'Pre-peak','Post-peak'},'Fontsize',19,'Location','NorthWest');
+legend boxoff;
+box off;
+xlim([0 1]);
+set(gca,'LineWidth',2,'tickdir','out','XTick',[0:0.1:1],'Xminortick','on','YTick',[0:0.1:1],'YminorTick','on','Fontsize',20);
+xlabel('Relative infectivity','Fontsize',22);
+ylabel('RT-PCR diagnostic sensitivity','Fontsize',22);
+
+text(-0.134734239802225,0.997604166666667,'C','Fontsize',32,'FontWeight','bold');
+
+print(gcf,['RT-PCR_Curves_1.png'],'-dpng','-r600');
+
+figure('units','normalized','outerposition',[0 0 1 1]);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
 % Delta
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
-subplot('Position',[0.561491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
+subplot('Position',[0.061491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
+
 vv=2;
 ts2=tsvB(vv);
 
@@ -119,13 +165,13 @@ box off;
 set(gca,'LineWidth',2,'tickdir','out','XTick',[0:5:50],'Xminortick','on','YTick',[0:0.1:1],'YminorTick','on','Fontsize',20);
 ylabel('Diagnostic sensitivity','Fontsize',22);
 xlabel('Days post-infection','Fontsize',22);
-text(-6.30407911001236,0.995,'B','Fontsize',32,'FontWeight','bold');
+text(-6.30407911001236,0.995,'E','Fontsize',32,'FontWeight','bold');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % All together
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-subplot('Position',[0.561491596638655,0.114,0.424600840336134,0.390000000000001]);
-
+% subplot('Position',[0.561491596638655,0.114,0.424600840336134,0.390000000000001]);
+subplot('Position',[0.561491596638655,0.592256332320174,0.424600840336134,0.390000000000001]);
 plot(t-ts1,S1,'k',t-ts2,S2,'b',t-ts3,S3,'r','LineWidth',2); hold on
 plot(zeros(101,1),linspace(0,1,101),':','color',[0.75 0.75 0.75],'LineWidth',2);
 legend({'3.1 day incubation period','4.4 day incubation period','5.72 day incubation period'},'Fontsize',19);
@@ -136,5 +182,5 @@ set(gca,'LineWidth',2,'tickdir','out','XTick',[-5:5:50],'Xminortick','on','YTick
 ylabel('Diagnostic sensitivity','Fontsize',22);
 xlabel('Days since symptom onset','Fontsize',22);
 
-text(-11.2533992,0.995,'D','Fontsize',32,'FontWeight','bold');
-print(gcf,['RT-PCR_Curves.png'],'-dpng','-r600');
+text(-11.2533992,0.995,'F','Fontsize',32,'FontWeight','bold');
+print(gcf,['RT-PCR_Curves_2.png'],'-dpng','-r600');
