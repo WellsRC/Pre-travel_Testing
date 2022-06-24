@@ -152,9 +152,9 @@ for vv=1:3
                 plot(ii+linspace(xx(nt),xx(nt)+dxx,101),100.*MLE_Red(nt,ii).*ones(101,1),'LineWidth',2,'color',Lcolour(nt,:));
             end
             if(nt==1)
-                text(5.45,58,'RT-PCR','Color',Lcolour(nt,:),'Fontsize',20);
+                text(4.15,58,'RT-PCR','Color',Lcolour(nt,:),'Fontsize',20);
             else
-                text(5.45,58-5.*(nt-1),AdjustedNames_Plotting(testName{nt-1}),'Color',Lcolour(nt,:),'Fontsize',20);                
+                text(4.15,58-5.*(nt-1),AdjustedNames_Plotting(testName{nt-1}),'Color',Lcolour(nt,:),'Fontsize',20);                
             end
         end
         set(gca,'LineWidth',2,'tickdir','out','Fontsize',18,'XTickLabel','','XTick',[1:6],'YTick',[0:10:60]);

@@ -36,7 +36,7 @@ for ii=1:NumTests
                 set(gca,'LineWidth',1.1,'tickdir','out','Fontsize',18,'XTick',[0:5:40],'xlim',[0 25],'XMinorTick','on','Yminortick','on','YTick',[0:20:100],'Ylim',[0 100]);
                 ytickformat('percentage')
                 xlabel('Days since symptom onset','Fontsize',18);
-                ylabel({'Percent','positive agreement'},'Fontsize',18,'Position',[-2.94470530625081,50,-0.999999999999986]);
+                ylabel({'Percent','positive agreement'},'Fontsize',18,'Position',[-1.863123106003592,50,-0.999999999999986]);
                 text(-2.312574783683559.*25./40,108.4,'n=','Fontsize',14);
                 for ss=1:length(w)
                     if(~isnan(w(ss)))
@@ -99,7 +99,7 @@ for ii=1:NumTests
         set(gca,'LineWidth',2,'tickdir','out','Fontsize',18,'XTick',[0:5:40],'xlim',[0 40],'XMinorTick','on','Yminortick','on','YTick',[0:0.1:1],'Ylim',[0 1]);
         ylabel({'Diagnostic sensitivity'},'Fontsize',18);
         xlabel('Days post-infection','Fontsize',18);
-        text(-6.54739985398804,0.988,char(65+jj),'Fontsize',30,'FontWeight','bold');
+        text(-5.653893695920,0.988,char(65+jj),'Fontsize',30,'FontWeight','bold');
         legend([p1 p2],{'RT-PCR','Rapid antigen test'},'Fontsize',18);
         legend boxoff;
     end
