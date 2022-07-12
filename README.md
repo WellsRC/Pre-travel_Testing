@@ -18,15 +18,25 @@ Installation instruction for MATLAB can be found at https://www.mathworks.com/he
 
 ## Analysis functions
 TX0 - Runs the MLE and uncertainty analysis for RT-PCR
+
 NT- Runs the analysis for no tests
+
 TX1 - Runs the MLE analysis for RA tests
+
 TX1Fa - Runs a subset of uncertainty analysis for the RA tests
+
 TX1Fb - Runs a subset of uncertainty analysis for the RA tests
 
 ## Result functions
 FigureS4 - Generates Figure S4
+
 Table_Output - Generates tables for supplement
+
 Table_Beta_Coefficients- Generates table for PPA logistic regression coefficients
+
 Plot_PPA_RA_Sensitivity- Produces plots for the different RA tests in the supplement
+
 Plot_PCR_Fit - Generates the plot for the RT-PCR diagnostic sensitivity
+
 Plot_NB_Probability- Produces the plot for the sensitivty analysis for the ngative binomial 
+
